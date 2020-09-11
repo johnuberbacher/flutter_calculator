@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(new MyApp());
 
@@ -11,6 +12,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIOverlays([]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DynamicTheme(
