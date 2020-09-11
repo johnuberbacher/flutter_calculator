@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 
 void main() => runApp(new MyApp());
 
@@ -10,24 +11,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeData _darkTheme = ThemeData(
-    accentColor: Colors.red,
-    brightness: Brightness.dark,
-    primaryColor: Colors.amber,
-  );
-
-  ThemeData _lightTheme = ThemeData(
-      accentColor: Colors.pink,
-      brightness: Brightness.light,
-      primaryColor: Colors.blue);
-
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Flutter Calculator',
-      home: new MyHomePage(title: 'Flutter Calculator'),
-      debugShowCheckedModeBanner: false,
-    );
+    return DynamicTheme(
+        defaultBrightness: Brightness.light,
+        data: (brightness) => ThemeData(
+              primarySwatch: Colors.indigo,
+              brightness: brightness,
+            ),
+        themedWidgetBuilder: (context, theme) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Exam Prep',
+            theme: theme,
+            home: new MyHomePage(title: 'Flutter Calculator'),
+          );
+        });
   }
 }
 
@@ -44,6 +43,17 @@ class _MyHomePageState extends State<MyHomePage> {
   double num1 = 0.0;
   double num2 = 0.0;
   String operand = "";
+
+  void themeSwitch(context, value) {
+    DynamicTheme.of(context).setBrightness(
+        Theme.of(context).brightness == Brightness.dark
+            ? Brightness.light
+            : Brightness.dark);
+    setState(() {
+      isSwitched = value;
+      print(isSwitched);
+    });
+  }
 
   buttonPressed(String buttonText) {
     if (buttonText == "AC") {
@@ -97,13 +107,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  toggleTheme(value) {
-    setState(() {
-      isSwitched = value;
-      print(isSwitched);
-    });
-  }
-
   Widget calculatorButton(String buttonText) {
     return new Expanded(
       child: new OutlineButton(
@@ -116,7 +119,6 @@ class _MyHomePageState extends State<MyHomePage> {
           style: TextStyle(
             fontSize: 30.0,
             fontWeight: FontWeight.w300,
-            color: Colors.white,
           ),
         ),
         onPressed: () => buttonPressed(buttonText),
@@ -128,15 +130,25 @@ class _MyHomePageState extends State<MyHomePage> {
     return new Expanded(
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment(
-                0.8, 0.0), // 10% of the width, so there are ten blinds.
-            colors: [
-              const Color(0xFF608efc),
-              const Color(0xFF453caa)
-            ], // whitish to gray
-          ),
+          gradient: Theme.of(context).brightness == Brightness.dark
+              ? LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment(
+                      0.8, 0.0), // 10% of the width, so there are ten blinds.
+                  colors: [
+                    const Color(0xFF608efc),
+                    const Color(0xFF453caa)
+                  ], // whitish to gray
+                )
+              : LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment(
+                      0.8, 0.0), // 10% of the width, so there are ten blinds.
+                  colors: [
+                    const Color(0xFFff9a61),
+                    const Color(0xFFd67c9b)
+                  ], // whitish to gray
+                ),
         ),
         child: new OutlineButton(
           padding: new EdgeInsets.symmetric(
@@ -148,7 +160,6 @@ class _MyHomePageState extends State<MyHomePage> {
             style: TextStyle(
               fontSize: 30.0,
               fontWeight: FontWeight.w300,
-              color: Colors.white,
             ),
           ),
           onPressed: () => buttonPressed("="),
@@ -166,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
           elevation: 0,
           title: new Switch(
             value: isSwitched,
-            onChanged: (value) => toggleTheme(value),
+            onChanged: (value) => themeSwitch(context, value),
             activeTrackColor: Colors.white54,
             activeColor: Colors.white,
           ),
@@ -177,15 +188,25 @@ class _MyHomePageState extends State<MyHomePage> {
             new Expanded(
               child: new Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment(0.8,
-                          0.0), // 10% of the width, so there are ten blinds.
-                      colors: [
-                        const Color(0xFF608efc),
-                        const Color(0xFF453caa)
-                      ], // whitish to gray
-                    ),
+                    gradient: Theme.of(context).brightness == Brightness.dark
+                        ? LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment(0.8,
+                                0.0), // 10% of the width, so there are ten blinds.
+                            colors: [
+                              const Color(0xFF608efc),
+                              const Color(0xFF453caa)
+                            ], // whitish to gray
+                          )
+                        : LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment(0.8,
+                                0.0), // 10% of the width, so there are ten blinds.
+                            colors: [
+                              const Color(0xFFff9a61),
+                              const Color(0xFFd67c9b)
+                            ], // whitish to gray
+                          ),
                   ),
                   alignment: Alignment.bottomRight,
                   padding: new EdgeInsets.symmetric(
@@ -199,15 +220,25 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             new Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment(
-                        0.8, 0.0), // 10% of the width, so there are ten blinds.
-                    colors: [
-                      const Color(0xFF37498f),
-                      const Color(0xFF1c1b48)
-                    ], // whitish to gray
-                  ),
+                  gradient: Theme.of(context).brightness == Brightness.dark
+                      ? LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment(0.8,
+                              0.0), // 10% of the width, so there are ten blinds.
+                          colors: [
+                            const Color(0xFF37498f),
+                            const Color(0xFF1c1b48)
+                          ], // whitish to gray
+                        )
+                      : LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment(0.8,
+                              0.0), // 10% of the width, so there are ten blinds.
+                          colors: [
+                            const Color(0xFFFFFFFF),
+                            const Color(0xFFFFFFFF)
+                          ], // whitish to gray
+                        ),
                 ),
                 child: new Column(children: [
                   new Row(children: [
