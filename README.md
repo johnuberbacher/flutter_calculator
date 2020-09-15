@@ -1,6 +1,6 @@
 # flutter_calculator
 
-Calculator App in Flutter/Dart with light and dark mode toggle switch. Shared Preferences keeps the users dark or light mode selection even after the app closes.
+Functioning calculator App in Flutter/Dart with light and dark mode toggle switch. Shared Preferences keeps the users dark or light mode selection even after the app closes.
 
 ## Screenshot
 
