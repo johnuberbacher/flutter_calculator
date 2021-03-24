@@ -12,6 +12,8 @@ Clone Repo
 
 Open in Android Studio/VS Code
 
+flutter pub/packages get
+
 flutter run
 
 ## Meta
